@@ -17,7 +17,7 @@
     <h1>
         eve 物价统计
     </h1>
-    <div><div id="fuel" style="width: 100%;height:500px;"/></div>
+    <div><div id="fuel" style="width: 100%;height:800px;"/></div>
 
     <div class="chart"><div id="boat_vegetable_complex" style="width: 100%;height:400px;"/> <!-- 船菜复合物 --> </div>
     <div class="chart"><div id="boat_vegetable_alloy" style="width: 100%;height:400px;"/> <!-- 船菜合金    --> </div>
@@ -220,12 +220,14 @@
                 trigger: 'axis'
             },
             legend: {
+                orient: 'horizontal',
+                bottom: 0,
                 data: ["超张力塑料","等离子体团","多样复合物","反应金属","工业纤维","光彩合金","光滑复合物","光泽合金","硅结构铸材","贵金属","黑暗复合物","活性气体","基础金属","建筑模块","晶体复合物","精密合金","聚芳酰胺","冷却剂","离子溶液","灵巧单元建筑模块","纳米体","凝缩液","浓缩合金","闪光合金","同位素燃料","透光复合物","稀有气体","纤维复合物","悬浮等离子","液化臭氧","有毒金属","杂色复合物","重金属","重水",]
             },
             grid: {
                 left: '3%',
                 right: '4%',
-                bottom: '3%',
+                bottom: '6%',
                 containLabel: true,
             },
             toolbox: {
@@ -320,7 +322,7 @@
         var boat_vegetable_alloyChart = echarts.init(document.getElementById('boat_vegetable_alloy'))
         var funai_metalChart = echarts.init(document.getElementById('funai_metal'))
         var construction_cuisineChart = echarts.init(document.getElementById('construction_cuisine'))
-        var option_ALLPRICEChart = echarts.init(document.getElementById('ALLPRICE'))
+        var option_ALLPRICEChart = echarts.init(document.getElementById('ALLPRICE'))    
 
         fuelChart.setOption(option_fuel);
         boat_vegetable_complexChart.setOption(option_boat_vegetable_complex);
@@ -328,6 +330,9 @@
         funai_metalChart.setOption(option_funai_metal);
         construction_cuisineChart.setOption(option_construction_cuisine);
         option_ALLPRICEChart.setOption(option_ALLPRICE);
+
+
+        
 
         window.addEventListener('resize', function () {
             fuelChart.resize()
