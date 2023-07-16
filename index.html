@@ -1,0 +1,351 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script src="./js/echarts.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/jsencrypt.js"></script>
+
+    <style>
+        .chart{
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        eve 物价统计
+    </h1>
+    <div><div id="fuel" style="width: 100%;height:500px;"/></div>
+
+    <div class="chart"><div id="boat_vegetable_complex" style="width: 100%;height:400px;"/> <!-- 船菜复合物 --> </div>
+    <div class="chart"><div id="boat_vegetable_alloy" style="width: 100%;height:400px;"/> <!-- 船菜合金    --> </div>
+    <div class="chart"><div id="funai_metal" style="width: 100%;height:400px;"/> <!-- 船菜金属    --> </div>
+    <div class="chart"><div id="construction_cuisine" style="width: 100%;height:400px;"/> <!-- 建筑菜    --> </div>
+    <div class="chart"><div id="ALLPRICE" style="width: 100%;height:800px;"/> <!-- 总表    --> </div>
+
+    <script>
+        var _data = "W3siZGF5IjogIjIwMjMtMDctMTQgMjE6NDA6MTciLCAi5YWJ5b2p5ZCI6YeRIjogNTg1LCAi5YWJ5rO95ZCI6YeRIjogODUwLCAi5YWJ5ruR5aSN5ZCI54mpIjogNjA5LCAi5Ya35Y205YmCIjogNTQ5LCAi5Yed57yp5rayIjogNDY3LCAi5Y+N5bqU6YeR5bGeIjogMTc1MCwgIuWQjOS9jee0oOeHg+aWmSI6IDQ5OTksICLln7rnoYDph5HlsZ4iOiAzNjQ5LCAi5aSa5qC35aSN5ZCI54mpIjogMTIxNiwgIuW3peS4mue6pOe7tCI6IDE0MCwgIuW7uuetkeaooeWdlyI6IDQ1MCwgIuaCrOa1ruetieemu+WtkCI6IDI0OSwgIuaZtuS9k+WkjeWQiOeJqSI6IDY5MiwgIuacieavkumHkeWxniI6IDE3ODcsICLmnYLoibLlpI3lkIjniakiOiAxNDcwLCAi5rS75oCn5rCU5L2TIjogMzcwLCAi5rWT57yp5ZCI6YeRIjogNTk4LCAi5ray5YyW6Iet5rCnIjogNjMwLCAi54G15ben5Y2V5YWD5bu6562R5qih5Z2XIjogNDEsICLnoYXnu5PmnoTpk7jmnZAiOiAxMDUsICLnprvlrZDmurbmtrIiOiAxNzg1LCAi56iA5pyJ5rCU5L2TIjogNDAwLCAi562J56a75a2Q5L2T5ZuiIjogOTk5NiwgIueyvuWvhuWQiOmHkSI6IDEyMywgIue6pOe7tOWkjeWQiOeJqSI6IDQyMCwgIue6s+exs+S9kyI6IDI1OTQsICLogZroirPphbDog7oiOiAzODUsICLotLXph5HlsZ4iOiA2MDAsICLotoXlvKDlipvloZHmlpkiOiA5MDAsICLpgI/lhYnlpI3lkIjniakiOiAxMDAxLCAi6YeN5rC0IjogOTcsICLph43ph5HlsZ4iOiA4ODYsICLpl6rlhYnlkIjph5EiOiAzMzAsICLpu5HmmpflpI3lkIjniakiOiA4MTB9LCB7ImRheSI6ICIyMDIzLTA3LTE1IDA4OjUzOjUzIiwgIuWFieW9qeWQiOmHkSI6IDUzMCwgIuWFieazveWQiOmHkSI6IDg0MCwgIuWFiea7keWkjeWQiOeJqSI6IDYyMCwgIuWGt+WNtOWJgiI6IDU1NywgIuWHnee8qea2siI6IDQ2NiwgIuWPjeW6lOmHkeWxniI6IDE1ODAsICLlkIzkvY3ntKDnh4PmlpkiOiAzOTkwLCAi5Z+656GA6YeR5bGeIjogMzMwMCwgIuWkmuagt+WkjeWQiOeJqSI6IDEzMDAsICLlt6XkuJrnuqTnu7QiOiAxNTAwLCAi5bu6562R5qih5Z2XIjogNTgwLCAi5oKs5rWu562J56a75a2QIjogMjQwLCAi5pm25L2T5aSN5ZCI54mpIjogNjkwLCAi5pyJ5q+S6YeR5bGeIjogMTg5MSwgIuadguiJsuWkjeWQiOeJqSI6IDE1NzcsICLmtLvmgKfmsJTkvZMiOiAzNTgsICLmtZPnvKnlkIjph5EiOiA3MDEsICLmtrLljJboh63msKciOiA2MzAsICLngbXlt6fljZXlhYPlu7rnrZHmqKHlnZciOiA0MjAsICLnoYXnu5PmnoTpk7jmnZAiOiAxMTQ4LCAi56a75a2Q5rq25rayIjogMTc3MCwgIueogOacieawlOS9kyI6IDM5OCwgIuetieemu+WtkOS9k+WboiI6IDk4MDAsICLnsr7lr4blkIjph5EiOiAxMjUwLCAi57qk57u05aSN5ZCI54mpIjogNDIwLCAi57qz57Gz5L2TIjogMjc5OCwgIuiBmuiKs+mFsOiDuiI6IDQwMCwgIui0temHkeWxniI6IDc4NywgIui2heW8oOWKm+WhkeaWmSI6IDkwMCwgIumAj+WFieWkjeWQiOeJqSI6IDEwNDcsICLph43msLQiOiA5MCwgIumHjemHkeWxniI6IDk1NCwgIumXquWFieWQiOmHkSI6IDMyMCwgIum7keaal+WkjeWQiOeJqSI6IDgxM30sIHsiZGF5IjogIjIwMjMtMDctMTUgMjI6NTg6MjUiLCAi5YWJ5b2p5ZCI6YeRIjogNTUwLCAi5YWJ5rO95ZCI6YeRIjogNzI2LCAi5YWJ5ruR5aSN5ZCI54mpIjogNjAyLCAi5Ya35Y205YmCIjogNTM3LCAi5Yed57yp5rayIjogNDAwLCAi5Y+N5bqU6YeR5bGeIjogMTMxMSwgIuWQjOS9jee0oOeHg+aWmSI6IDQyNTAsICLln7rnoYDph5HlsZ4iOiAzMTAwLCAi5aSa5qC35aSN5ZCI54mpIjogMTkwOCwgIuW3peS4mue6pOe7tCI6IDI3MDAsICLlu7rnrZHmqKHlnZciOiA1MjUsICLmgqzmta7nrYnnprvlrZAiOiAyNTcsICLmmbbkvZPlpI3lkIjniakiOiA3NDksICLmnInmr5Lph5HlsZ4iOiAxNzk4LCAi5p2C6Imy5aSN5ZCI54mpIjogMTY0OSwgIua0u+aAp+awlOS9kyI6IDI5NiwgIua1k+e8qeWQiOmHkSI6IDUyMCwgIua2suWMluiHreawpyI6IDc5MCwgIueBteW3p+WNleWFg+W7uuetkeaooeWdlyI6IDQ3NiwgIuehhee7k+aehOmTuOadkCI6IDEwMjAsICLnprvlrZDmurbmtrIiOiAxOTkwLCAi56iA5pyJ5rCU5L2TIjogMzgwLCAi562J56a75a2Q5L2T5ZuiIjogOTk5NywgIueyvuWvhuWQiOmHkSI6IDEyMzYsICLnuqTnu7TlpI3lkIjniakiOiAzOTgsICLnurPnsbPkvZMiOiAyNTAwLCAi6IGa6Iqz6YWw6IO6IjogMzcwLCAi6LS16YeR5bGeIjogNTQ4LCAi6LaF5byg5Yqb5aGR5paZIjogODEwLCAi6YCP5YWJ5aSN5ZCI54mpIjogOTU3LCAi6YeN5rC0IjogMTA0LCAi6YeN6YeR5bGeIjogODk5LCAi6Zeq5YWJ5ZCI6YeRIjogNTc4LCAi6buR5pqX5aSN5ZCI54mpIjogODk5fSwgeyJkYXkiOiAiMjAyMy0wNy0xNiAxNDo0MDoxOSIsICLlhYnlvanlkIjph5EiOiA1NjEsICLlhYnms73lkIjph5EiOiA4OTYsICLlhYnmu5HlpI3lkIjniakiOiA2MDIsICLlhrfljbTliYIiOiA1MTAsICLlh53nvKnmtrIiOiAzODAsICLlj43lupTph5HlsZ4iOiAxNjI2LCAi5ZCM5L2N57Sg54eD5paZIjogNDAwMCwgIuWfuuehgOmHkeWxniI6IDMwMDAsICLlpJrmoLflpI3lkIjniakiOiAxNDgxLCAi5bel5Lia57qk57u0IjogMTU5MCwgIuW7uuetkeaooeWdlyI6IDQ2MCwgIuaCrOa1ruetieemu+WtkCI6IDIzNSwgIuaZtuS9k+WkjeWQiOeJqSI6IDg0NCwgIuacieavkumHkeWxniI6IDE2MDAsICLmnYLoibLlpI3lkIjniakiOiAxNjQwLCAi5rS75oCn5rCU5L2TIjogMjU5LCAi5rWT57yp5ZCI6YeRIjogNTU3LCAi5ray5YyW6Iet5rCnIjogNTUwLCAi54G15ben5Y2V5YWD5bu6562R5qih5Z2XIjogNDIyLCAi56GF57uT5p6E6ZO45p2QIjogMTAwMCwgIuemu+WtkOa6tua2siI6IDE1OTAsICLnqIDmnInmsJTkvZMiOiAzMDksICLnrYnnprvlrZDkvZPlm6IiOiA5NjUwLCAi57K+5a+G5ZCI6YeRIjogMTIzMywgIue6pOe7tOWkjeWQiOeJqSI6IDM4OSwgIue6s+exs+S9kyI6IDI1NDcsICLogZroirPphbDog7oiOiAzNzAsICLotLXph5HlsZ4iOiA3NTAsICLotoXlvKDlipvloZHmlpkiOiA3OTAsICLpgI/lhYnlpI3lkIjniakiOiA5NTIsICLph43msLQiOiA5NSwgIumHjemHkeWxniI6IDE0ODUsICLpl6rlhYnlkIjph5EiOiA0NjAsICLpu5HmmpflpI3lkIjniakiOiA5NDF9XQ=="        
+        
+        console.log()
+        var priceDataList = JSON.parse(decodeURIComponent(escape(atob(_data))))
+        /**var priceDataList = [
+            {
+                'day': '2023-07-15 21:40',
+                "重水": 80,
+                "液化臭氧": 520,
+                "离子溶液": 1450,
+                "同位素燃料": 4790,
+                "等离子团": 10799,
+                "金属": 1234,
+            },
+            {
+                'day': '2023-08-15 21:40',
+                "重水": 81,
+                "液化臭氧": 621,
+                "离子溶液": 1750,
+                "同位素燃料": 4790,
+                "等离子团": 10234,
+                "金属": 1234,
+            }
+        ]**/
+
+        // 指定图表的配置项和数据
+        var option_fuel = {
+            title: {
+                text: '燃料价格统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['重水', '液化臭氧', '离子溶液', '同位素燃料', '等离子体团']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+        var option_boat_vegetable_complex = {
+            title: {
+                text: '船菜复合物价格统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['杂色复合物','纤维复合物','透光复合物','多样复合物','光滑复合物','晶体复合物','黑暗复合物',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+        var option_boat_vegetable_alloy = {
+            title: {
+                text: '船菜合金价格统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['光泽合金','光彩合金','闪光合金','浓缩合金','精密合金',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+        var option_funai_metal = {
+            title: {
+                text: '船菜金属价格统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['基础金属','重金属','贵金属','反应金属','有毒金属',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+        var option_construction_cuisine = {
+            title: {
+                text: '建筑菜价格统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['活性气体','稀有气体','工业纤维','超张力塑料','聚芳酰胺','冷却剂','凝缩液','建筑模块','纳米体','硅结构铸材','灵巧单元建筑模块',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+        var option_ALLPRICE = {
+            title: {
+                text: '总价格统计表'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ["超张力塑料","等离子体团","多样复合物","反应金属","工业纤维","光彩合金","光滑复合物","光泽合金","硅结构铸材","贵金属","黑暗复合物","活性气体","基础金属","建筑模块","晶体复合物","精密合金","聚芳酰胺","冷却剂","离子溶液","灵巧单元建筑模块","纳米体","凝缩液","浓缩合金","闪光合金","同位素燃料","透光复合物","稀有气体","纤维复合物","悬浮等离子","液化臭氧","有毒金属","杂色复合物","重金属","重水",]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //data: ['07-15', '08-15', '09-15']
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: []
+        };
+
+        function updateData(priceDataList, option) {
+            var dayList = []
+            var seriesList = []
+            //     [
+            //     {
+            //         name: '重水',
+            //         type: 'line',
+            //         data: []
+            //     },
+            //     {
+            //         name: '液化臭氧',
+            //         type: 'line',
+            //         data: []
+            //     },
+            //     {
+            //         name: '离子溶液',
+            //         type: 'line',
+            //         data: []
+            //     },
+            //     {
+            //         name: '同位素燃料',
+            //         type: 'line',
+            //         data: []
+            //     },
+            //     {
+            //         name: '等离子团',
+            //         type: 'line',
+            //         data: []
+            //     }
+            // ]
+            var tmpData = {}
+            _.forEach(priceDataList, function (priceData) {
+                dayList.push(priceData.day)
+                for (item in priceData) {
+                    // console.log('item', item)
+                    if (option.legend.data.includes(item)) {
+                        if (item === 'day') {
+                            continue;
+                        }
+                        if (typeof tmpData[item] === 'undefined') {
+                            tmpData[item] = []
+                        }
+                        tmpData[item].push(priceData[item])
+                    }
+                }
+            })
+
+            _.forEach(tmpData, function (v, k) {
+
+                seriesList.push({
+                    name: k,
+                    type: 'line',
+                    data: v
+                })
+
+            })
+            // console.log('tmpData', tmpData)
+            option.xAxis.data = dayList
+            option.series = seriesList
+            // console.log('seriesList', seriesList)
+        }
+        
+        updateData(priceDataList, option_fuel)
+        updateData(priceDataList, option_boat_vegetable_complex)
+        updateData(priceDataList, option_boat_vegetable_alloy)
+        updateData(priceDataList, option_funai_metal)
+        updateData(priceDataList, option_construction_cuisine)
+        updateData(priceDataList, option_ALLPRICE)
+
+        // 使用刚指定的配置项和数据显示图表。
+        var fuelChart = echarts.init(document.getElementById('fuel'))
+        var boat_vegetable_complexChart = echarts.init(document.getElementById('boat_vegetable_complex'))
+        var boat_vegetable_alloyChart = echarts.init(document.getElementById('boat_vegetable_alloy'))
+        var funai_metalChart = echarts.init(document.getElementById('funai_metal'))
+        var construction_cuisineChart = echarts.init(document.getElementById('construction_cuisine'))
+        var option_ALLPRICEChart = echarts.init(document.getElementById('ALLPRICE'))
+
+        fuelChart.setOption(option_fuel);
+        boat_vegetable_complexChart.setOption(option_boat_vegetable_complex);
+        boat_vegetable_alloyChart.setOption(option_boat_vegetable_alloy);
+        funai_metalChart.setOption(option_funai_metal);
+        construction_cuisineChart.setOption(option_construction_cuisine);
+        option_ALLPRICEChart.setOption(option_ALLPRICE);
+
+        window.addEventListener('resize', function () {
+            fuelChart.resize()
+            boat_vegetable_complexChart.resize()
+            boat_vegetable_alloyChart.resize()
+            funai_metalChart.resize()
+            construction_cuisineChart.resize()
+            option_ALLPRICEChart.resize()
+        })
+    </script>
+</body>
+
+
+<script>
+    
+    
+
+</script>
+
+
+</html>
