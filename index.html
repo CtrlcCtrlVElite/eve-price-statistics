@@ -45,9 +45,9 @@
         
 
 
-        console.log(_data)
+        // console.log(_data)
         var priceDataList = JSON.parse(decodeURIComponent(escape(atob(_data))))
-        console.log(priceDataList)
+        // console.log(priceDataList)
         // 指定图表的配置项和数据
         var option_fuel = {
             title: {
@@ -293,8 +293,12 @@
             var dayList = []
             var seriesList = []
             var tmpData = {}
+            
             _.forEach(priceDataList, function (priceData) {
                 dayList.push(priceData.day)
+                // console.log('dayList', dayList)
+                // console.log('priceData', priceData)
+                var data = ''
                 for (item in priceData) {
                     // console.log('item', item)
                     if (option.legend.data.includes(item)) {
@@ -304,17 +308,20 @@
                         if (typeof tmpData[item] === 'undefined') {
                             tmpData[item] = []
                         }
+                        // tmpData[item].push([priceData[item], priceData['day']])
                         tmpData[item].push(priceData[item])
                     }
                 }
             })
-
+            // console.log('tmpData', tmpData)
+            // console.log('dayList', dayList.length)
             _.forEach(tmpData, function (v, k) {
-
+                var lis = [...Array(dayList.length - v.length).fill(0), ...v]
+                // console.log('lis', lis)
                 seriesList.push({
                     name: k,
                     type: 'line',
-                    data: v
+                    data: lis
                 })
 
             })
