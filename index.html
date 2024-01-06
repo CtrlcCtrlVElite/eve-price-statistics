@@ -47,7 +47,7 @@
 
         console.log(_data)
         var priceDataList = JSON.parse(decodeURIComponent(escape(atob(_data))))
-
+        console.log(priceDataList)
         // 指定图表的配置项和数据
         var option_fuel = {
             title: {
@@ -269,7 +269,7 @@
             grid: {
                 left: '3%',
                 right: '4%',
-                // bottom: '6%',
+                // bottom: '3%',
                 containLabel: true,
             },
             toolbox: {
