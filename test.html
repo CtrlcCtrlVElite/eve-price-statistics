@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="./js/ChartFunction.js"></script>
+
+
+    <!-- <style type="text/css">
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style> -->
+
+    <title>eve 物价统计</title>
+</head>
+
+<body style="overflow-x: hidden;">
+    <div id="parentContainer" style="position: absolute; height: 100%; width: 100%;left: 5.4%;">
+        <!-- <div style="height: 50vh; width: 90%;"> 
+            <canvas id="myChart"></canvas>
+        </div> -->
+    </div>
+
+</body>
+
+<script>
+
+    // var priceDataList = JSON.parse(decodeURIComponent(escape(atob(_data))))
+    function doNextTask(){
+        var priceDataList = JSON.parse(decodeURIComponent(escape(atob(_data))))
+        console.log(priceDataList)
+        priceDataList.forEach(element => {
+            var chart = createNewChart(element[0], element[1],element[2])
+            // chart.tooltip().positionMode("point");
+            // chart.tooltip().position("right").anchor("left-center").offsetX(5).offsetY(5);
+        }); 
+    }
+
+</script>
+<script>
+    var _data;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './data/data.txt', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // alert(xhr.responseText);
+            _data = xhr.responseText
+            doNextTask()
+        }
+    };
+    xhr.send();
+
+
+    
+
+</script>
+</html>
