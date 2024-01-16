@@ -11,7 +11,10 @@ function createStackedLineChart(ctx, dataList) {
         options: {
             maintainAspectRatio: false, // 设置为false以忽略宽高比例
             responsive: true,
-
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
             scales: {
                 x: {
                     min: time_min,
@@ -36,14 +39,29 @@ function createStackedLineChart(ctx, dataList) {
                 title: {
                     display: true,
                     text: titleA
-                  }
-            
+                },
+                // tooltip: {
+                //     callbacks: {
+                //       footer: footer,
+                //     }
+                // },
+
             },
+            
         },
     });
 
     return stackedLineChart;
 }
+
+const footer = (tooltipItems) => {
+    let sum = 0;
+  
+    tooltipItems.forEach(function(tooltipItem) {
+        sum += tooltipItem.parsed.y;
+    });
+    // return 'Sum: ' + sum;
+  };
 
 function createNewChart(newCanvasId, styleString, dataList) {
 
