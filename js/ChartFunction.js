@@ -18,17 +18,20 @@ function createStackedLineChart(ctx, dataList) {
             scales: {
                 x: {
                     min: time_min,
+                    display: true,
                     title: {
                         display: true,
                         text: "时间", // X-axis label
                     },
                 },
                 y: {
-                    beginAtZero: true,
+                    // beginAtZero: true,
+                    display: true,
                     title: {
                         display: true,
                         text: "价格/ isk", // Y-axis label
                     },
+                    suggestedMin: 0,
                 },
             },
             plugins: {
